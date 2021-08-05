@@ -20,7 +20,6 @@ afterAll(async () => {
 describe('POST /sign-in', () => {
     it('should answer with status 200 and a token', async () => {
         const user = await createUser();
-
         const userSignIn = {
             email: user.email,
             password: user.password,
@@ -29,5 +28,19 @@ describe('POST /sign-in', () => {
         const response = await supertest(app).post('/sign-in').send(userSignIn);
 
         expect(response.status).toBe(200);
+        expect(response.body.token).toBeTruthy;
+    });
+});
+
+describe('POST /sign-in', () => {
+    it('should answer with status 401', async () => {
+        const userSignIn = {
+            email: faker.internet.email(),
+            password: faker.internet.password(),
+        };
+
+        const response = await supertest(app).post('/sign-in').send(userSignIn);
+
+        expect(response.status).toBe(401);
     });
 });
