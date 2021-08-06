@@ -78,6 +78,36 @@ export async function removePokemon(usersId: number, pokemonId: number) {
     }
 }
 
+export async function getPokemons(usersId: number) {
+    const myPokemons = await getRepository(UserPokemon).find({
+        where: { usersId },
+    });
+
+    const myPokemonsId: any = {};
+    myPokemons.forEach((pokemon) => {
+        myPokemonsId[pokemon.pokemonId] = true;
+    });
+
+    const allPokemons = await getRepository(Pokemon).find();
+
+    const result: object[] = [];
+    allPokemons.map((pokemon) => {
+        result.push({
+            id: pokemon.id,
+            name: pokemon.name,
+            number: pokemon.number,
+            imagea: pokemon.image,
+            weight: pokemon.weight,
+            height: pokemon.height,
+            baseExp: pokemon.baseExp,
+            description: pokemon.description,
+            inMyPokemons: myPokemonsId[pokemon.id] || false,
+        });
+    });
+
+    return result;
+}
+
 function encrypt(password: string) {
     return bcrypt.hashSync(password, 10);
 }

@@ -85,3 +85,28 @@ describe('POST /my-pokemons/:id/remove', () => {
         expect(response.status).toBe(401);
     });
 });
+
+describe('GET /pokemons', () => {
+    it('should answer with status 200', async () => {
+        const user = await createUser();
+        const userSignIn = {
+            email: user.email,
+            password: user.password,
+        };
+
+        const promise = await supertest(app).post('/sign-in').send(userSignIn);
+        const { token } = promise.body;
+
+        const id = 3;
+
+        await supertest(app)
+            .post(`/my-pokemons/${id}/add`)
+            .set('Authorization', `Bearer ${token}`);
+
+        const response = await supertest(app)
+            .get(`/pokemons`)
+            .set('Authorization', `Bearer ${token}`);
+
+        expect(response.status).toBe(200);
+    });
+});

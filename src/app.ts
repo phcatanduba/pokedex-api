@@ -29,6 +29,8 @@ app.post(
     userController.removePokemon
 );
 
+app.get('/pokemons', middleware.authenticate, userController.getPokemons);
+
 export async function init() {
     await connectDatabase();
 }
