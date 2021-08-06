@@ -96,7 +96,7 @@ export async function getPokemons(usersId: number) {
             id: pokemon.id,
             name: pokemon.name,
             number: pokemon.number,
-            imagea: pokemon.image,
+            image: pokemon.image,
             weight: pokemon.weight,
             height: pokemon.height,
             baseExp: pokemon.baseExp,
