@@ -36,7 +36,7 @@ export async function verifyEmailAndPassword(email: string, password: string) {
 
 export async function isAValidToken(authorization: string) {
     const token = authorization.replace('Bearer ', '');
-    const response = await getRepository(Sessions).find();
+    const response = await getRepository(Sessions).find({ where: { token } });
     if (response.length === 0) {
         return false;
     } else {

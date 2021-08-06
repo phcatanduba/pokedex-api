@@ -47,3 +47,26 @@ describe('POST /my-pokemons/:id/add', () => {
         expect(response.status).toBe(200);
     });
 });
+
+describe('POST /my-pokemons/:id/add', () => {
+    it('should answer with status 400', async () => {
+        const token = faker.datatype.string();
+        const pokemonId = faker.datatype.number();
+
+        const pokemon: object = {
+            name: faker.name.firstName(),
+            number: faker.datatype.number(),
+            image: faker.image.imageUrl(),
+            weight: faker.datatype.number(),
+            height: faker.datatype.number(),
+            baseExp: faker.datatype.number(),
+            description: faker.lorem.paragraph(),
+        };
+
+        const response = await supertest(app)
+            .post(`/my-pokemons/${pokemonId}/add`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(pokemon);
+        expect(response.status).toBe(400);
+    });
+});
