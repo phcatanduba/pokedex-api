@@ -47,7 +47,7 @@ app.get('/popular', async (req, res) => {
         );
         newPokemon.name = pokes.name;
         newPokemon.number = pokes.id;
-        newPokemon.image = morePokes.data.images.photo;
+        newPokemon.image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${1}.png`;
         newPokemon.weight = pokes.weight;
         newPokemon.height = pokes.height;
         newPokemon.baseExp = pokes.base_experience;
