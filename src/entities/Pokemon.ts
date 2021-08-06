@@ -6,6 +6,9 @@ export default class Pokemon {
     id: number;
 
     @Column()
+    pokemonId: number;
+
+    @Column()
     name: string;
 
     @Column()
