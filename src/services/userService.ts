@@ -39,11 +39,13 @@ export async function verifyEmailAndPassword(email: string, password: string) {
 
 export async function isAValidToken(authorization: string) {
     const token = authorization.replace('Bearer ', '');
-    const response = await getRepository(Sessions).find({ where: { token } });
-    if (response.length === 0) {
+    const response = await getRepository(Sessions).findOne({
+        where: { token },
+    });
+    if (response === undefined) {
         return false;
     } else {
-        return true;
+        return response;
     }
 }
 
@@ -52,12 +54,26 @@ export async function getUser(email: string) {
     return user;
 }
 
-export async function addPokemon(id: number) {
-    const pokemon = await getRepository(Pokemon).findOne({ where: { id } });
+export async function addPokemon(usersId: number, pokemonId: number) {
+    const pokemon = await getRepository(Pokemon).findOne({
+        where: { id: pokemonId },
+    });
     if (pokemon === undefined) {
         return false;
     } else {
-        await getRepository(UserPokemon).insert(pokemon);
+        await getRepository(UserPokemon).insert({ usersId, pokemonId });
+        return true;
+    }
+}
+
+export async function removePokemon(usersId: number, pokemonId: number) {
+    const pokemon = await getRepository(Pokemon).findOne({
+        where: { id: pokemonId },
+    });
+    if (pokemon === undefined) {
+        return false;
+    } else {
+        await getRepository(UserPokemon).delete({ usersId, pokemonId });
         return true;
     }
 }

@@ -63,8 +63,9 @@ export async function authenticate(
             req.headers.authorization
         );
         if (!isAValidToken) {
-            res.sendStatus(400);
+            res.sendStatus(401);
         } else {
+            res.locals.user = isAValidToken;
             next();
         }
     } catch (e) {
@@ -75,8 +76,27 @@ export async function authenticate(
 
 export async function addPokemon(req: Request, res: Response) {
     const id: number = +req.params.id;
+    const { usersId } = res.locals.user;
+
     try {
-        const hasThisPokemon = await userService.addPokemon(id);
+        const hasThisPokemon = await userService.addPokemon(usersId, id);
+        if (!hasThisPokemon) {
+            res.sendStatus(404);
+        } else {
+            res.sendStatus(200);
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+}
+
+export async function removePokemon(req: Request, res: Response) {
+    const id: number = +req.params.id;
+    const { usersId } = res.locals.user;
+
+    try {
+        const hasThisPokemon = await userService.removePokemon(usersId, id);
         if (!hasThisPokemon) {
             res.sendStatus(404);
         } else {
