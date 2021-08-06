@@ -34,16 +34,21 @@ export async function signin(req: Request, res: Response) {
     if (!email || !password) {
         res.sendStatus(400);
     } else {
-        const isAuthorized = await userService.verifyEmailAndPassword(
-            email,
-            password
-        );
+        try {
+            const isAuthorized = await userService.verifyEmailAndPassword(
+                email,
+                password
+            );
 
-        if (isAuthorized) {
-            const token = await sessionService.create(email);
-            res.send({ token }).status(200);
-        } else {
-            res.sendStatus(401);
+            if (isAuthorized) {
+                const token = await sessionService.create(email);
+                res.send({ token }).status(200);
+            } else {
+                res.sendStatus(401);
+            }
+        } catch (e) {
+            console.log(e);
+            res.sendStatus(500);
         }
     }
 }
@@ -53,12 +58,32 @@ export async function authenticate(
     res: Response,
     next: NextFunction
 ) {
-    const isAValidToken = await userService.isAValidToken(
-        req.headers.authorization
-    );
-    if (!isAValidToken) {
-        res.sendStatus(400);
-    } else {
-        next();
+    try {
+        const isAValidToken = await userService.isAValidToken(
+            req.headers.authorization
+        );
+        if (!isAValidToken) {
+            res.sendStatus(400);
+        } else {
+            next();
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+}
+
+export async function addPokemon(req: Request, res: Response) {
+    const id: number = +req.params.id;
+    try {
+        const hasThisPokemon = await userService.addPokemon(id);
+        if (!hasThisPokemon) {
+            res.sendStatus(404);
+        } else {
+            res.sendStatus(200);
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
     }
 }

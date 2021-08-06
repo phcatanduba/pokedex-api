@@ -7,7 +7,6 @@ import 'reflect-metadata';
 import connectDatabase from './database';
 
 import * as userController from './controllers/userController';
-import * as pokemonController from './controllers/pokemonController';
 
 const app = express();
 app.use(cors());
@@ -20,7 +19,7 @@ app.post('/sign-in', userController.signin);
 app.post(
     '/my-pokemons/:id/add',
     userController.authenticate,
-    pokemonController.add
+    userController.addPokemon
 );
 
 export async function init() {

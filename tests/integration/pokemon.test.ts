@@ -28,22 +28,12 @@ describe('POST /my-pokemons/:id/add', () => {
 
         const promise = await supertest(app).post('/sign-in').send(userSignIn);
         const { token } = promise.body;
-        const pokemonId = faker.datatype.number();
-
-        const pokemon: object = {
-            name: faker.name.firstName(),
-            number: faker.datatype.number(),
-            image: faker.image.imageUrl(),
-            weight: faker.datatype.number(),
-            height: faker.datatype.number(),
-            baseExp: faker.datatype.number(),
-            description: faker.lorem.paragraph(),
-        };
+        const id = 1;
 
         const response = await supertest(app)
-            .post(`/my-pokemons/${pokemonId}/add`)
-            .set('Authorization', `Bearer ${token}`)
-            .send(pokemon);
+            .post(`/my-pokemons/${id}/add`)
+            .set('Authorization', `Bearer ${token}`);
+
         expect(response.status).toBe(200);
     });
 });
@@ -51,22 +41,11 @@ describe('POST /my-pokemons/:id/add', () => {
 describe('POST /my-pokemons/:id/add', () => {
     it('should answer with status 400', async () => {
         const token = faker.datatype.string();
-        const pokemonId = faker.datatype.number();
-
-        const pokemon: object = {
-            name: faker.name.firstName(),
-            number: faker.datatype.number(),
-            image: faker.image.imageUrl(),
-            weight: faker.datatype.number(),
-            height: faker.datatype.number(),
-            baseExp: faker.datatype.number(),
-            description: faker.lorem.paragraph(),
-        };
-
+        const id = 1;
         const response = await supertest(app)
-            .post(`/my-pokemons/${pokemonId}/add`)
-            .set('Authorization', `Bearer ${token}`)
-            .send(pokemon);
+            .post(`/my-pokemons/${id}/add`)
+            .set('Authorization', `Bearer ${token}`);
+
         expect(response.status).toBe(400);
     });
 });

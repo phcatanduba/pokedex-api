@@ -6,9 +6,6 @@ export default class Pokemon {
     id: number;
 
     @Column()
-    pokemonId: number;
-
-    @Column()
     name: string;
 
     @Column()
@@ -28,7 +25,4 @@ export default class Pokemon {
 
     @Column()
     description: string;
-
-    @Column()
-    inMyPokemons: boolean;
 }

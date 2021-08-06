@@ -1,7 +1,10 @@
 import { getRepository } from 'typeorm';
-import User from '../entities/User';
 import bcrypt from 'bcrypt';
+
+import User from '../entities/User';
+import Pokemon from '../entities/Pokemon';
 import Sessions from '../entities/Session';
+import UserPokemon from '../entities/UserPokemon';
 
 export async function signup(email: string, password: string) {
     const hash = encrypt(password);
@@ -47,6 +50,16 @@ export async function isAValidToken(authorization: string) {
 export async function getUser(email: string) {
     const user = await getRepository(User).findOne({ where: { email } });
     return user;
+}
+
+export async function addPokemon(id: number) {
+    const pokemon = await getRepository(Pokemon).findOne({ where: { id } });
+    if (pokemon === undefined) {
+        return false;
+    } else {
+        await getRepository(UserPokemon).insert(pokemon);
+        return true;
+    }
 }
 
 function encrypt(password: string) {
