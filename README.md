@@ -2,9 +2,6 @@
 
 A Pokédex API with infos about the Pokémons.
 
->GIF<
-
-Try it out now at LINK DEPLOY 
 
 ## About
 
